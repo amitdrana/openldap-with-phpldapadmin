@@ -1,7 +1,7 @@
 #!/bin/bash
 user=$1
 pass=$2
-uid=$(getent passwd |tail -n 1|awk '{print $1}'| awk '{split($0,array,":")} END{print array[3]}')
+uid=$(getent passwd | awk -F : '{print $3}' | sort -n |tail -n 2 | head -1)
 uid=$((uid+1))
 
 echo "$uid"
@@ -19,17 +19,5 @@ sed -i "s/1000/${uid}/g" ldapuser1.ldif
 cat ldapuser1.ldif
 
 ldapadd -x -w 123 -D "cn=admin,dc=tbs,dc=com" -f ldapuser1.ldif
-#cn: amit
-#gidnumber: 500
-#givenname: amit
-#homedirectory: /home/amit
-#loginshell: /bin/bash
-#objectclass: inetOrgPerson
-#objectclass: posixAccount
-#objectclass: top
-#sn: amit
-#uid: amit
-#uidnumber: 
-#userpassword: {SSHA}p18K5liYx1bdL93SrjztHGApyi3wTkc4
 
 
